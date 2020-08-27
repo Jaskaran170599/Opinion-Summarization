@@ -1,0 +1,2 @@
+- Amazon Fashion Data: http://deepyeti.ucsd.edu/jianmo/amazon/categoryFiles/AMAZON_FASHION.json.gz
+- Amazon All Products data: http://deepyeti.ucsd.edu/jianmo/amazon/index.html
