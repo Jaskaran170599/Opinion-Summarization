@@ -1,0 +1,1 @@
+#define dataset class here which is used to feed in the model for training and eval purposes , use TF.data.Dataset api .

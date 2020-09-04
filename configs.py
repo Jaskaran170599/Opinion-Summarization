@@ -1,0 +1,1 @@
+# Define all the basic necessary things like batch size max_len paths etc. in a config class.
