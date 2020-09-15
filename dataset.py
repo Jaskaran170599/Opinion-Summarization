@@ -4,8 +4,6 @@ import transformers
 import tensorflow as tf
 import numpy as np
 import pandas as pd
-
-# local imports
 from configs import config
 
 
