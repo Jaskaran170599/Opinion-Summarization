@@ -6,14 +6,14 @@ import numpy as np
 import pandas as pd
 
 # local imports
-import configs
+from configs import config
 
 
 class dataset:
 
     def __init__(self, data):
-        self.tokenizer = configs.TOKENIZER
-        self.max_len = configs.MAX_LEN
+        self.tokenizer = config.TOKENIZER
+        self.max_len = config.MAX_LEN
         self.data = data
 
     def get_target(self, data):
@@ -22,11 +22,11 @@ class dataset:
         encoded_text = self.tokenizer.encode_plus(
             text,
             max_length = self.max_len,
-            add_special_tokens = False,
+            add_special_tokens = True,
             pad_to_max_length = True,
             return_attention_mask = True,
             return_token_type_ids = True,
-            return_tensors = 'pt',
+            return_tensors = 'tf',
         )
 
         input_ids = encoded_text.input_ids
@@ -39,7 +39,7 @@ class dataset:
 
         return {"orig": text, "input_ids": input_ids, "token_type_ids": token_type_ids, "attention_mask": attention_mask}
 
-    def generator(self, ):
+    def generator(self,):
         """(inputs, targets)""" 
         # HERE, target is same as inputs
         for i in range(len(self.data)):
@@ -47,6 +47,45 @@ class dataset:
 
 
 
-# data2 = pd.read_csv('yelp_reviews.csv')
-# d = dataset(data2)
-# encoded_data = d.generator()
+
+
+class TF_dataset:
+    
+
+    def __init__(self, data, batch_size):
+        self.data = dataset(data)
+        self.output_type = {
+        "orig": tf.string, 
+        "input_ids": tf.int32, 
+        "token_type_ids": tf.int32, 
+        "attention_mask": tf.int32,
+        }
+
+        self.output_shape = {
+        "orig": tf.TensorShape(None,), 
+        "input_ids": tf.TensorShape((1, config.MAX_LEN)), 
+        "token_type_ids": tf.TensorShape((1, config.MAX_LEN)), 
+        "attention_mask": tf.TensorShape((1, config.MAX_LEN)),
+        }
+
+        self.batch_size = batch_size
+
+
+    def getDataset(self,):
+        dataset = tf.data.Dataset.from_generator(
+            self.data.generator,
+            output_types = self.output_type,
+            output_shapes = self.output_shape,
+            ).batch(self.batch_size)
+        
+        
+        return dataset
+
+
+# data2 = pd.read_csv('dataset/yelp_reviews.csv')
+# test = TF_dataset(data2, 2)
+# o = test.getDataset()
+
+# for i in o:
+#     print(i)
+#     break
