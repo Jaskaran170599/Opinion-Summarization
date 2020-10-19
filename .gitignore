@@ -1,2 +1,5 @@
 model/
 dataset/
+*.ipynb
+__pycache__
+.ipynb_checkpoints
