@@ -3,21 +3,21 @@ import transformers
 import tensorflow as tf
 import numpy as np
 import pandas as pd
-from configs import config
 import torch
 
-
+from configs import config
+from nltk.tokenize.treebank import TreebankWordDetokenizer
 
 class dataset(torch.utils.data.Dataset):
     
-    def __init__(self, data):
+    def __init__(self, data_path):
         self.tokenizer = config.TOKENIZER
         self.max_len = config.MAX_LEN
         self.data = data
 
     def get_target(self, data):
         text = data["text"]
-
+        phrases = data['phrases']
         encoded_text = self.tokenizer.encode_plus(
             text,
             max_length=self.max_len,
@@ -27,20 +27,31 @@ class dataset(torch.utils.data.Dataset):
             return_token_type_ids=True,
             return_tensors='pt',
         )
-
+        
+        encoded_phrases = self.tokenizer.encode_plus(
+            text,
+            max_length=self.max_len,
+            add_special_tokens=True,
+            pad_to_max_length=True,
+            return_attention_mask=True,
+            return_token_type_ids=True,
+            return_tensors='pt',
+        )
+        
         input_ids = encoded_text.input_ids
-        # print(input_ids)
         token_type_ids = encoded_text.token_type_ids
-        # print(len(token_type_ids))
         attention_mask = encoded_text.attention_mask
+        
+        p_input_ids = encoded_phrases.input_ids
+        p_token_type_ids = encoded_phrases.token_type_ids
+        p_attention_mask = encoded_phrases.attention_mask
+        
+        
+        return {"orig": text, "input_ids": input_ids, "token_type_ids": token_type_ids, "attention_mask": attention_mask,
+                "phrases": text, "p_input_ids": p_input_ids, "p_token_type_ids": p_token_type_ids, "p_attention_mask": p_attention_mask
+               }
 
-        return {"orig": text, "input_ids": input_ids, "token_type_ids": token_type_ids, "attention_mask": attention_mask}
-
-    # def generator(self,):
-    #     """(inputs, targets)"""
-    #     # HERE, target is same as inputs
-    #     for i in range(len(self.data)):
-    #         yield self.get_target(self.data.iloc[i])
+ 
 
     def __len__(self):
         'Denotes the total number of samples'
@@ -50,7 +61,12 @@ class dataset(torch.utils.data.Dataset):
         return self.get_target(self.data.iloc[index])
 
 
-
+   # def generator(self,):
+    #     """(inputs, targets)"""
+    #     # HERE, target is same as inputs
+    #     for i in range(len(self.data)):
+    #         yield self.get_target(self.data.iloc[i])
+    
 # class TF_dataset:
 
 #     def __init__(self, data, batch_size):
@@ -84,17 +100,17 @@ class dataset(torch.utils.data.Dataset):
 
 ######################################## Test Code ############################################
 
-# data2 = pd.read_csv('dataset/yelp_reviews.csv')
-# test = TF_dataset(data2, 2)
-# o = test.getDataset()
+data2 = pd.read_csv('dataset/yelp_reviews.csv')
+test = TF_dataset(data2, 2)
+o = test.getDataset()
 
-# for i in o:
-#     print(i)
-#     break
+for i in o:
+    print(i)
+    break
 
-# training_set = dataset(data2)
-# params = {'batch_size': 2,
-#           'shuffle': True,
-#           'num_workers': 6}
+training_set = dataset(data2)
+params = {'batch_size': 2,
+          'shuffle': True,
+          'num_workers': 6}
 
-# training_generator = torch.utils.data.DataLoader(training_set, **params)
+training_generator = torch.utils.data.DataLoader(training_set, **params)
