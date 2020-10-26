@@ -45,7 +45,8 @@ valid_de_file = globalparams["valid_de_file"]
 enc_maxlength = encparams["max_length"]
 dec_maxlength = decparams["max_length"]
 
-batch_size = modelparams["batch_size"]
+batch_size = config.BATCH_SIZE
+
 train_dataset = TranslationDataset(train_en_file, train_de_file, en_tokenizer, de_tokenizer, enc_maxlength, dec_maxlength)
 train_dataloader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=False, \
                                                 drop_last=True, num_workers=1, collate_fn=train_dataset.collate_function)
