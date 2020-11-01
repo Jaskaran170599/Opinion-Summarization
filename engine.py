@@ -7,6 +7,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
+from transformers.optimization import get_linear_scheduler_with_warmup
 
 
 from dataset import dataset
@@ -17,7 +18,11 @@ from model import get_model
 # Init the dataset
 review_data = pd.read_csv('dataset/yelp_reviews.csv')
 print(review_data.shape)
+review_data = review_data.dropna()
 
+train_data, val_data = train_test_split(review_data, random_state = 1, test_size = 0.2)
+# train_data = review_data
+# val_data = review_data
 
 params = {'batch_size': config.BATCH_SIZE,
           'shuffle': config.SHUFFLE,
@@ -66,12 +71,12 @@ def train_model():
         de_attention_mask = d['attention_mask'].to(device)
         # print(en_attention_mask.shape)
 
-        # p_input_ids = d['p_input_ids'].to(device)
-        # p_attention_mask = d['p_attention_mask'].to(device)
+        p_input_ids = d['p_input_ids'].to(device)
+        p_attention_mask = d['p_attention_mask'].to(device)
 
         lm_labels = de_output.clone()
 
-        output = model(input_ids=en_input, attention_mask=en_attention_mask, decoder_input_ids=de_output, decoder_attention_mask=de_attention_mask, labels = lm_labels)
+        output = model(input_ids=p_input_ids, attention_mask=p_attention_mask, decoder_input_ids=de_output, decoder_attention_mask=de_attention_mask, labels = lm_labels)
         # print(output)
 
         prediction_scores = output[1]
@@ -105,13 +110,13 @@ def eval_model():
         de_attention_mask = d['attention_mask'].to(device)
         # print(en_attention_mask.shape)
 
-        # p_input_ids = d['p_input_ids'].to(device)
-        # p_attention_mask = d['p_attention_mask'].to(device)
+        p_input_ids = d['p_input_ids'].to(device)
+        p_attention_mask = d['p_attention_mask'].to(device)
 
         lm_labels = de_output.clone()
 
 
-        output = model(input_ids=en_input, attention_mask=en_attention_mask,
+        output = model(input_ids=p_input_ids, attention_mask=p_attention_mask,
                     decoder_input_ids=de_output, decoder_attention_mask = de_attention_mask, labels = lm_labels)
 
         prediction_scores = output[1]

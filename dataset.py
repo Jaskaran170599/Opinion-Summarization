@@ -30,7 +30,7 @@ class dataset(torch.utils.data.Dataset):
         )
 
         encoded_phrases = self.tokenizer.encode_plus(
-            text,
+            phrases,
             max_length=self.max_len,
             add_special_tokens=True,
             pad_to_max_length=True,
@@ -92,21 +92,3 @@ class dataset(torch.utils.data.Dataset):
 #         ).batch(self.batch_size)
 
 #         return dataset
-
-
-######################################## Test Code ############################################
-
-# data2 = pd.read_csv('dataset/yelp_reviews.csv')
-# test = TF_dataset(data2, 2)
-# o = test.getDataset()
-
-# for i in o:
-#     print(i)
-#     break
-
-# training_set = dataset(data2)
-# params = {'batch_size': 2,
-#           'shuffle': True,
-#           'num_workers': 6}
-
-# training_generator = torch.utils.data.DataLoader(training_set, **params)
