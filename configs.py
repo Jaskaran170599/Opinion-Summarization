@@ -5,8 +5,8 @@ import transformers
 class config:
 
     MAX_LEN = 128
-    TOKENIZER = transformers.BertTokenizer.from_pretrained('bert-base-uncased')
-    MODEL_LIST = ['bert-base-uncased']
+    TOKENIZER = None
+    MODEL_LIST = ['bert-base-uncased','roberta-base']
 
     # Model parameters
     BATCH_SIZE = 4

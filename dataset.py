@@ -11,11 +11,15 @@ from nltk.tokenize.treebank import TreebankWordDetokenizer
 
 class dataset(torch.utils.data.Dataset):
 
-    def __init__(self, data_path):
+    def __init__(self, data_path, model):
         self.tokenizer = config.TOKENIZER
         self.max_len = config.MAX_LEN
         self.data = data
-
+        self.model=model
+        
+#     def pre_processing(self,text):
+#         if 'roberta' in self.model:
+            
     def get_target(self, data):
         text = data["text"]
         phrases = data['phrases']
@@ -58,37 +62,4 @@ class dataset(torch.utils.data.Dataset):
     def __getitem__(self, index):
         return self.get_target(self.data.iloc[index])
 
-   # def generator(self,):
-    #     """(inputs, targets)"""
-    #     # HERE, target is same as inputs
-    #     for i in range(len(self.data)):
-    #         yield self.get_target(self.data.iloc[i])
-
-# class TF_dataset:
-
-#     def __init__(self, data, batch_size):
-#         self.data = dataset(data)
-#         self.output_type = {
-#             "orig": tf.string,
-#             "input_ids": tf.int32,
-#             "token_type_ids": tf.int32,
-#             "attention_mask": tf.int32,
-#         }
-
-#         self.output_shape = {
-#             "orig": tf.TensorShape(None, ),
-#             "input_ids": tf.TensorShape((1, config.MAX_LEN)),
-#             "token_type_ids": tf.TensorShape((1, config.MAX_LEN)),
-#             "attention_mask": tf.TensorShape((1, config.MAX_LEN)),
-#         }
-
-#         self.batch_size = batch_size
-
-#     def getDataset(self,):
-#         dataset = tf.data.Dataset.from_generator(
-#             self.data.generator,
-#             output_types=self.output_type,
-#             output_shapes=self.output_shape,
-#         ).batch(self.batch_size)
-
-#         return dataset
+  
