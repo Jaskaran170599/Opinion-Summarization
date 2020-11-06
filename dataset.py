@@ -11,11 +11,10 @@ from nltk.tokenize.treebank import TreebankWordDetokenizer
 
 class dataset(torch.utils.data.Dataset):
 
-    def __init__(self, data_path, model):
+    def __init__(self, data_path):
         self.tokenizer = config.TOKENIZER
         self.max_len = config.MAX_LEN
-        self.data = data
-        self.model=model
+        self.data = data_path
         
 #     def pre_processing(self,text):
 #         if 'roberta' in self.model:
