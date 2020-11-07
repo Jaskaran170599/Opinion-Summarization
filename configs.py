@@ -14,6 +14,12 @@ class config:
     NO_OF_WORKERS = 1
     EPOCHS = 10
     LR = 5e-5
+    SAVE_MODEL="./model/"
+    
+    os.makedirs(SAVE_MODEL,exist_ok=True)
+    
+    #Generate params
+    
     
     #prepare
     MIN_EXT=2
@@ -23,7 +29,7 @@ class config:
     SPLIT=(0.8,0.2,0.2)
     TARGET_PATH= "./dataset/"
     
-    os.makedirs("./dataset",exist_ok=True)
+    os.makedirs(TARGET_PATH,exist_ok=True)
     
     ASPECTS2EMBED={"food-quantity":'food', 
         "recommendation":'all', 

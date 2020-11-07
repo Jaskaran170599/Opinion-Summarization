@@ -87,4 +87,7 @@ if __name__=='__main__':
     eval_model(valid_dataloader,model,device)
    
     #save the model to the config part
-    
+    if not hp.save_model:
+        model.save_pretrained(os.path.join(config.SAVE_MODEL,'%s_model_%d'%(config.MODEL_LIST[model],config.EPOCHS)))
+    else:
+        model.save_pretrained(os.path.join(hp.save_model,'%s_model_%d'%(config.MODEL_LIST[model],config.EPOCHS)))

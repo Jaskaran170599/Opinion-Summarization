@@ -30,6 +30,7 @@ class dataset(torch.utils.data.Dataset):
             return_token_type_ids=True,
             return_tensors='pt',
             padding='max_length',
+            truncation=True
         )
 
         encoded_phrases = self.tokenizer.encode_plus(
@@ -40,6 +41,7 @@ class dataset(torch.utils.data.Dataset):
             return_token_type_ids=True,
             return_tensors='pt',
             padding='max_length',
+            truncation=True
         )
 
         input_ids = encoded_text.input_ids[0]
