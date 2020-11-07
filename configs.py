@@ -1,6 +1,6 @@
 # Define all the basic necessary things like batch size max_len paths etc. in a config class.
 
-import transformers
+import os
 
 class config:
 
@@ -22,6 +22,8 @@ class config:
     MAX_SENT=20
     SPLIT=(0.8,0.2,0.2)
     TARGET_PATH= "./dataset/"
+    
+    os.makedirs("./dataset",exist_ok=True)
     
     ASPECTS2EMBED={"food-quantity":'food', 
         "recommendation":'all', 

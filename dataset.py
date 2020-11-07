@@ -14,8 +14,8 @@ class dataset(torch.utils.data.Dataset):
     def __init__(self, data_path):
         self.tokenizer = config.TOKENIZER
         self.max_len = config.MAX_LEN
-        self.data = data_path
-        
+        self.data_path = data_path
+        self.data=pd.read_csv(data_path)
 #     def pre_processing(self,text):
 #         if 'roberta' in self.model:
             
@@ -26,20 +26,20 @@ class dataset(torch.utils.data.Dataset):
             text,
             max_length=self.max_len,
             add_special_tokens=True,
-            pad_to_max_length=True,
             return_attention_mask=True,
             return_token_type_ids=True,
             return_tensors='pt',
+            padding='max_length',
         )
 
         encoded_phrases = self.tokenizer.encode_plus(
             phrases,
             max_length=self.max_len,
             add_special_tokens=True,
-            pad_to_max_length=True,
             return_attention_mask=True,
             return_token_type_ids=True,
             return_tensors='pt',
+            padding='max_length',
         )
 
         input_ids = encoded_text.input_ids[0]
