@@ -7,9 +7,9 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
-from transformers.optimization import get_linear_scheduler_with_warmup
+# from transformers.optimization import get_linear_scheduler_with_warmup
 
-
+from tqdm import tqdm
 from configs import config
 
 
@@ -23,7 +23,7 @@ def count_parameters(mdl):
 
 
 
-def train_model(train_dataloader,model,device):
+def train_model(train_dataloader,model,device,eval_mode=0,valid_dataloader=None):
     
     print(f'The model has {count_parameters(model):,} trainable parameters')
 
@@ -35,7 +35,8 @@ def train_model(train_dataloader,model,device):
     num_train_batches = len(train_dataloader)
     
     for epoch in range(config.EPOCHS):
-        for i, d in enumerate(train_dataloader):
+        epoch_loss = 0
+        for i, d in enumerate(tqdm(train_dataloader,desc="Training epoch %d"%(epoch))):
 
             optimizer.zero_grad()
 
@@ -69,7 +70,9 @@ def train_model(train_dataloader,model,device):
             epoch_loss += loss.item()
 
         print("Mean epoch %d loss: "%epoch, (epoch_loss / num_train_batches))
-
+        if eval_mode:
+            print('evaluation',end=' ')
+            eval_model(valid_dataloader,model,device)
 
 def eval_model(valid_dataloader,model,device):
     #needs to add rogue score here
@@ -79,9 +82,7 @@ def eval_model(valid_dataloader,model,device):
     
     num_valid_batches = len(valid_dataloader)
     
-    for i, d  in enumerate(valid_dataloader):
-
-        optimizer.zero_grad()
+    for i, d  in enumerate(tqdm(valid_dataloader, desc="Validataion")):
 
         en_input = d['input_ids'].to(device)
         de_output = d['input_ids'].to(device)

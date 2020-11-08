@@ -104,11 +104,15 @@ class prepare:
         
         train,val,test=self._split(data)
         
+        train.to_csv(os.path.join(self.target_path,'train%d.csv'%(0)))
+        val.to_csv(os.path.join(self.target_path,'val%d.csv'%(0)))
+        test.to_csv(os.path.join(self.target_path,'test.csv'%(0)))
+        
+        
         if method==1:
             train=self._add_aspect_embedding(train)
             val=self._add_aspect_embedding(val)
         
-        train.to_csv(os.path.join(self.target_path,'train%d.csv'%(method)))
-        val.to_csv(os.path.join(self.target_path,'val%d.csv'%(method)))
-        test.to_csv(os.path.join(self.target_path,'test%d.csv'%(method)))
-        
+            train.to_csv(os.path.join(self.target_path,'train%d.csv'%(method)))
+            val.to_csv(os.path.join(self.target_path,'val%d.csv'%(method)))
+            
