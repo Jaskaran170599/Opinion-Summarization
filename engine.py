@@ -11,7 +11,7 @@ import torch.nn.functional as F
 
 from tqdm import tqdm
 from configs import config
-
+from utils import evaluateSummary
 
 params = {'batch_size': config.BATCH_SIZE,
           'shuffle': config.SHUFFLE,

@@ -1,4 +1,5 @@
 # call this script to train the model and show the evaluation results .
+import os
 import argparse
 import torch
 import transformers
@@ -24,6 +25,7 @@ if __name__=='__main__':
     parser.add_argument('--model_path',type=str)
     parser.add_argument('--model_type',type=str)
     parser.add_argument('--shuffle',type=bool)
+    parser.add_argument('--save_model',type=str)
     parser.add_argument('--training_method',type=int)
     
     
@@ -43,15 +45,15 @@ if __name__=='__main__':
         params['shuffle']=hp.shuffle
     
     
-    model=0
+    model_type=0
     
     if hp.model_type and ('roberta' in hp.model_type.lower()):
-        model=1
+        model_type=1
     
     if hp.model_path :
         model=load_model(hp.model_path)
     else:
-        model = get_model(model)
+        model = get_model(model_type)
 
     
     if hp.jsonl is None:
@@ -88,6 +90,6 @@ if __name__=='__main__':
    
     #save the model to the config part
     if not hp.save_model:
-        model.save_pretrained(os.path.join(config.SAVE_MODEL,'%s_model_%d'%(config.MODEL_LIST[model],config.EPOCHS)))
+        model.save_pretrained(os.path.join(config.SAVE_MODEL,'%s_model_%d'%(config.MODEL_LIST[model_type],config.EPOCHS)))
     else:
-        model.save_pretrained(os.path.join(hp.save_model,'%s_model_%d'%(config.MODEL_LIST[model],config.EPOCHS)))
+        model.save_pretrained(os.path.join(hp.save_model,'%s_model_%d'%(config.MODEL_LIST[model_type],config.EPOCHS)))
