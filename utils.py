@@ -6,8 +6,6 @@ from rouge import Rouge
 
 rouge = Rouge(metrics = ['rouge-1','rouge-2', 'rouge-l'])
 
-
-# Function to compare created summary with reference summary
 def evaluateSummary(hypothesis, reference) :
     scores = rouge.get_scores(hypothesis, reference)
     new_score = {
@@ -17,4 +15,16 @@ def evaluateSummary(hypothesis, reference) :
     }
     return new_score
 
-# scores =  evaluateSummary(hypothesis, reference)
+
+def generate_output(model,input_ids):
+    
+    if not config.BEAM:
+        output=model.generate(input_ids=input_ids,attention_mask=att_mask,min_length=10,
+                               early_stopping=True,pad_token_id=tok.pad_token_id,bos_token_id=tok.bos_token_id
+                               ,eos_token_id=tok.eos_token_id)
+    else:
+        output=model.generate(input_ids=input_ids,attention_mask=att_mask,min_length=10,
+                               early_stopping=True,pad_token_id=tok.pad_token_id,bos_token_id=tok.bos_token_id
+                               ,eos_token_id=tok.eos_token_id,num_beams=config.NBEAM)
+    
+    return config.TOKENIZER.decode(output[0], skip_special_tokens=True)

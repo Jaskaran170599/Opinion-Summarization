@@ -19,7 +19,8 @@ class config:
     os.makedirs(SAVE_MODEL,exist_ok=True)
     
     #Generate params
-    
+    BEAM=False
+    NBEAM=2
     
     #prepare
     MIN_EXT=2
