@@ -6,7 +6,7 @@ class config:
 
     MAX_LEN = 128
     TOKENIZER = None
-    MODEL_LIST = ['bert-base-uncased','roberta-base']
+    MODEL_LIST = ['bert-base-uncased','roberta-base','gpt2']
 
     # Model parameters
     BATCH_SIZE = 4

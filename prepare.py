@@ -12,7 +12,7 @@ from configs import config
 
 class prepare:
     
-    def __init__(self,path):
+    def __init__(self,path=None):
         
         self.path=path
         self.min_ext=config.MIN_EXT
@@ -72,7 +72,7 @@ class prepare:
                 
         return pd.DataFrame(data,columns=['phrases','text','attributes','sentiments','sents'])
 
-    def _add_aspect_embedding(self,data):
+    def add_aspect_embedding(self,data):
 
         data_emb=[]
 
@@ -106,7 +106,7 @@ class prepare:
         
         train.to_csv(os.path.join(self.target_path,'train%d.csv'%(0)))
         val.to_csv(os.path.join(self.target_path,'val%d.csv'%(0)))
-        test.to_csv(os.path.join(self.target_path,'test.csv'%(0)))
+        test.to_csv(os.path.join(self.target_path,'test%d.csv'%(0)))
         
         
         if method==1:
