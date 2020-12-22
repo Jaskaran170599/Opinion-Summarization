@@ -12,7 +12,7 @@ Using pre-trained transformers model which are trained as a whole on data ex. T5
 
 It also compares the performance of different Transformer models based on the above training techniques. The models are Bert2Bert ,T5and Roberta2Roberta .
 
-The pipeline is based on [Opinion Digest] (https://arxiv.org/abs/2005.01901) Framework
+The pipeline is based on [Opinion Digest](https://arxiv.org/abs/2005.01901) Framework
 
 Model | Rouge-1 | Rouge-2 | Rouge-L | 
 --- | --- | --- | --- |
