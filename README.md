@@ -1,5 +1,5 @@
-# Opinion-Summarization
-### The aim of this project is to create Abstract based opinion summarization using the power of transformers.
+# TransOpinion
+### The aim of this project is to create Abstractive opinion summarization using the power of transformers.
 
 The study focuses on training different Transformers used in this project that is:
 #### Stacking
