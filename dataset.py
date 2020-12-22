@@ -11,17 +11,19 @@ from nltk.tokenize.treebank import TreebankWordDetokenizer
 
 class dataset(torch.utils.data.Dataset):
 
-    def __init__(self, data_path):
+    def __init__(self, data_path,model):
         self.tokenizer = config.TOKENIZER
         self.max_len = config.MAX_LEN
         self.data_path = data_path
         self.data=pd.read_csv(data_path)
-#     def pre_processing(self,text):
-#         if 'roberta' in self.model:
-            
+        self.model=model
+        
     def get_target(self, data):
-        text = data["text"]
-        phrases = data['phrases']
+        text = ' '+data["text"].strip()+' '
+        phrases = ' '+data['phrases'].strip()+' '
+        if self.model==1:
+            phrases=phrases.replace('[SEP]','</s></s>')
+            
         encoded_text = self.tokenizer.encode_plus(
             text,
             max_length=self.max_len,
